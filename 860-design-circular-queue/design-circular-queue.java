@@ -1,41 +1,44 @@
 class MyCircularQueue {
-    int[] data;
-    int front = 0;  // Points to the first element
-    int rear = -1;  // Points to the last element
-    int size = 0;   // Tracks the number of elements
+    private int[] queue;
+    private int front;
+    private int rear;
+    private int size;
 
     public MyCircularQueue(int k) {
-        data = new int[k];
+        queue = new int[k + 1]; 
+        size = k + 1;
+        front = 0;
+        rear = 0;
     }
 
     public boolean enQueue(int value) {
-        if (size == data.length) return false; // Queue is full
-        rear = (rear + 1) % data.length;  // Move rear circularly
-        data[rear] = value;
-        size++;
+        if (isFull()) return false;
+        queue[rear] = value;
+        rear = (rear + 1) % size;
         return true;
     }
 
     public boolean deQueue() {
-        if (size == 0) return false; // Queue is empty
-        front = (front + 1) % data.length; // Move front circularly
-        size--;
+        if (isEmpty()) return false;
+        front = (front + 1) % size;
         return true;
     }
 
     public int Front() {
-        return size == 0 ? -1 : data[front]; // Return front element
+        if (isEmpty()) return -1;
+        return queue[front];
     }
 
     public int Rear() {
-        return size == 0 ? -1 : data[rear]; // Return rear element
+        if (isEmpty()) return -1;
+        return queue[(rear - 1 + size) % size];
     }
 
     public boolean isEmpty() {
-        return size == 0;
+        return front == rear;
     }
 
     public boolean isFull() {
-        return size == data.length;
+        return (rear + 1) % size == front;
     }
 }
